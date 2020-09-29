@@ -4,15 +4,15 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 class Aspirante{
-	private int folio=0;
+	private int folio;
 	private String nombre;
 	private byte edad;
 	private String []redesSociales;
-	public Aspirante(String nombre, byte edad, String[] redesSociales) {
+	public Aspirante(String nombre, byte edad, String[] redesSociales,int folio) {
 		this.nombre = nombre;
 		this.edad = edad;
 		this.redesSociales = redesSociales;
-		this.folio++;
+		this.folio=folio;
 	}
 	
 	public String getNombre() {
@@ -53,22 +53,26 @@ class RegistroAspirantes{
 	}
 	public boolean agregarAspirantes(Aspirante a) {
 		listaApirantes.add(a);
-		for (Aspirante aspirante : listaApirantes) {
-			System.out.println(aspirante);
-		}
 		return true;
 	}
-	public Object eliminarAspirante(int folio) {
+	public Aspirante eliminarAspirante(int folio) {
 		//Elimincion ultimo aspirante
+		Aspirante aElimiado = null;
+		String redes[]= {""};
 		for (Aspirante aspirante : listaApirantes) {
-			
+			if(aspirante.getfolio()==folio) {
+				aElimiado=listaApirantes.remove(folio-1);
+				listaApirantes.add(folio,new Aspirante("N/A",(byte) 0,redes, folio));
+				return aElimiado;
+			}
 		}
-		
-		return listaApirantes.remove(listaApirantes.size()-1);
+		if(aElimiado==null) {
+			System.out.println("Aspirante no encontrado");
+		}
+		return aElimiado;
 	}
 	public void mostrarAspirantes() {
-		//Recorrido de un array list
-		
+		/*
 		System.out.println("Forma 1 Con un objeto Iterrator...");
 		Iterator i=listaApirantes.iterator();
 		while(i.hasNext()) {
@@ -80,9 +84,10 @@ class RegistroAspirantes{
 			System.out.println((Aspirante)listaApirantes.get(j));
 			
 		}
+		*/
 		System.out.println("Forma 3 con un ciclo forMejorado (FOREACH)");
-		for (Object x: listaApirantes) {
-			System.out.println(x);
+		for (Aspirante aspirante : listaApirantes) {
+			System.out.println(aspirante);
 		}
 	}
 	public void buscarAspirant() {
@@ -98,39 +103,50 @@ public class pruebaMemoriaDinamica {
 	public static void main(String[] args) {
 		Scanner entrada=new Scanner(System.in);
 		String op="";
+		int numFolio=1;
 		RegistroAspirantes ra= new RegistroAspirantes();
-		String redes[]= {"Facebook","twiter","Instagram"};
-		System.out.println("Elige la opcion que desees:");
-		System.out.println("A) Agregar aspirante");
-		System.out.println("B) Eliminar aspirante");
-		System.out.println("C) Buscar aspirante");
-		op=entrada.nextLine().toUpperCase().replace(" ","");
-		switch (op) {
-		case "A":
-			System.out.println("Registro aspirantes:");
-			System.out.println("¿Cúal es el nimbre del espirante?");
-			String nombre=entrada.nextLine();
-			System.out.println("Cual es la edad del aspirante?");
-			byte edad=entrada.nextByte();
-			Aspirante a1=new Aspirante(nombre, edad, redes);
-			ra.agregarAspirantes(a1);
-			break;
-		case "B":
-			if(ra.listaApirantes.isEmpty()==false) {
-				System.out.println("¿Cual es le folio del aspirante que vas a aliminar?");
-				int folio=entrada.nextInt();
-				ra.eliminarAspirante(folio);
-				}else {
-					System.out.println("No se an ingresado ningun aspirante por el momento");
-				}
-			break;
-		default:
-			break;
-		}
+		do {
+			op="";
+			String redes[]= {"Facebook","twiter","Instagram"};
+			System.out.println("Elige la opcion que desees:");
+			System.out.println("A) Agregar aspirante");
+			System.out.println("B) Eliminar aspirante");
+			System.out.println("C) Buscar aspirante");
+			System.out.println("D) Mostrar aspirantes");
+			System.out.println("E) Salir");
+			op=entrada.nextLine().toUpperCase().replace(" ","");
+			switch (op) {
+			case "A":
+				System.out.println("Registro aspirantes:");
+				System.out.println("¿Cúal es el nimbre del espirante?");
+				String nombre=entrada.nextLine();
+				System.out.println("Cual es la edad del aspirante?");
+				byte edad=entrada.nextByte();
+				Aspirante a1=new Aspirante(nombre, edad, redes,numFolio);
+				numFolio++;
+				ra.agregarAspirantes(a1);
+				break;
+			case "B":
+				if(ra.listaApirantes.isEmpty()==false) {
+					System.out.println("Hay: "+ra.listaApirantes.size()+" aspirantes");
+					System.out.println("¿Cual es le folio del aspirante que vas a aliminar?");
+					int folio=entrada.nextInt();
+					System.out.println("El aspirante eliminado fue: "+ra.eliminarAspirante(folio));
+					}else {
+						System.out.println("No se an ingresado ningun aspirante por el momento");
+					}
+				break;
+			case "C":
+				
+				break;
+			case "D":
+				ra.mostrarAspirantes();
+				break;
+			default:
+				break;
+			}
+		}while(!op.equalsIgnoreCase("E"));
 		
-		
-		
-		ra.agregarAspirantes(new Aspirante("dos",(byte) 18,redes));
 		
 		System.out.println("Tamaño arraylist: "+ra.listaApirantes.size());
 
