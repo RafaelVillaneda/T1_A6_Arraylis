@@ -56,13 +56,13 @@ class RegistroAspirantes{
 		return true;
 	}
 	public Aspirante eliminarAspirante(int folio) {
-		//Elimincion ultimo aspirante
+		//Elimincion aspirante
 		Aspirante aElimiado = null;
 		String redes[]= {""};
 		for (Aspirante aspirante : listaApirantes) {
 			if(aspirante.getfolio()==folio) {
 				aElimiado=listaApirantes.remove(folio-1);
-				listaApirantes.add(folio,new Aspirante("N/A",(byte) 0,redes, folio));
+				//listaApirantes.add(folio,new Aspirante("N/A",(byte) 0,redes, folio));
 				return aElimiado;
 			}
 		}
@@ -90,8 +90,13 @@ class RegistroAspirantes{
 			System.out.println(aspirante);
 		}
 	}
-	public void buscarAspirant() {
-		
+	public void buscarAspirante(int referencia) {
+		for (Aspirante poci : listaApirantes) {
+			if(poci.getfolio()==referencia) {
+				System.out.println("Nombre: "+poci.getNombre());
+				System.out.println("Edad: "+poci.getEdad());
+			}
+		}
 	}
 	
 	
@@ -106,6 +111,7 @@ public class pruebaMemoriaDinamica {
 		int numFolio=1;
 		RegistroAspirantes ra= new RegistroAspirantes();
 		do {
+			entrada.nextLine();
 			op="";
 			String redes[]= {"Facebook","twiter","Instagram"};
 			System.out.println("Elige la opcion que desees:");
@@ -137,18 +143,25 @@ public class pruebaMemoriaDinamica {
 					}
 				break;
 			case "C":
-				
+				int referencia;
+				System.out.print("Ingresa el solio del aspirante: ");
+				referencia=entrada.nextInt();
+				System.out.println();
+				ra.buscarAspirante(referencia);
 				break;
 			case "D":
 				ra.mostrarAspirantes();
 				break;
+			case "E":
+				System.out.println("Saliendo...");
+				break;
 			default:
+				System.out.println("Elige una opcion disponible");
 				break;
 			}
+			System.out.println(op);
 		}while(!op.equalsIgnoreCase("E"));
-		
-		
-		System.out.println("Tamaño arraylist: "+ra.listaApirantes.size());
+	
 
 	}
 
